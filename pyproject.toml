@@ -9,12 +9,12 @@ python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-sh='^1.11', 
+sh='^1.11'
 certifi='^2020.12.5'
-mysql='^0.0.2', 
-mysql-connector-python='^8.0.22',
-mysqlclient='^2.0.3',
-protobuf='^3.14.0',
+mysql='^0.0.2'
+mysql-connector-python='^8.0.22'
+mysqlclient='^2.0.3'
+protobuf='^3.14.0'
 six='^1.15.0'
 
 [build-system]
