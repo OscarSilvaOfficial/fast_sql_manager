@@ -13,7 +13,7 @@ from fast_orm.repository import Repository
 ```
 
 Ao importar a classe você pode instância-la ou
-usala diretamente preenchedo dos parâmetros necessário.
+usa-la diretamente preenchendo os parâmetros necessários.
 
 ```python
 db = Repository(
@@ -91,8 +91,8 @@ db.update(
 )
 ```
 
-É possível também inserir dentro do where operadores condicionáis, porém o parametro muda um pouco
-pois é necessário dentro do dicionário informar qual a condicional que deseja usar
+É possível também inserir dentro do where operadores condicionais, porém o parametro muda um pouco
+pois é necessário dentro do dicionário informar qual a condicional que deseja usar.
 
 ```python
 db.update(
@@ -116,7 +116,7 @@ realizar o filtro where e o valor que a coluna deve conter.
     db.delete('tab_pessoa', {'cpf': '123456789'})
 ```
 
-É possível também inserir dentro do where operadores condicionáis, porém o parametro muda um pouco
+É possível também inserir dentro do where operadores condicionais, porém o parâmetro muda um pouco
 pois é necessário dentro do dicionário informar qual a condicional que deseja usar.
 
 ```python
