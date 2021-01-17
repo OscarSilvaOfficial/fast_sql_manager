@@ -6,4 +6,4 @@ def deploy(c, docs=False):
     c.run('git add .')
     c.run('git commit -m"atualização da versão"')
     c.run('git push origin master')
-    #c.run('twine upload --skip-existing dist/*')
+    c.run('twine upload --skip-existing dist/*')
