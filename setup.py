@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="fast_orm",
-    version="0.1.0",
+    version="0.1.2",
     author="Oscar da Silva",
     author_email="oscarkaka222@gmail.com",
     description="Um pacote simples para realizar operações no banco",
