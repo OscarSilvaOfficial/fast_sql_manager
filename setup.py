@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="fast_orm",
-    version="0.1.2",
+    name="fast_sql_manager",
+    version="0.1.4",
     author="Oscar da Silva",
     author_email="oscarkaka222@gmail.com",
     description="Um pacote simples para realizar operações no banco",
