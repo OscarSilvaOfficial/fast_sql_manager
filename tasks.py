@@ -68,10 +68,19 @@ def build(c, docs=False):
 
 @task
 def push(c, docs=False):
+
+    filename = "setup.py"
+    regex = r'[0-9]?[0-9].[0-9]?[0-9].[0-9]?[0-9]'
+
+    with open(filename, 'r+') as f:
+        text = f.read()
+        subs = re.findall(regex, text)[0]
+
     c.run('git add .')
     msg = input('Escreva a mensagem de commit: \n')
     c.run('git commit -m"{0}"'.format(msg))
-    c.run('git push origin master')
+    c.run('git tag -a {0} -m"New release"'.format(subs))
+    c.run('git push origin {0}'.format(subs))
 
 
 @task
@@ -92,7 +101,7 @@ def chooseManagementVersion(c, docs=False):
 
 
 @task
-def deployToPypi(c, docs=False):
+def deploy(c, docs=False):
     c.run('inv chooseManagementVersion')
     c.run('inv build')
     c.run('inv push')
