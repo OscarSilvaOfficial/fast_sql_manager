@@ -101,8 +101,14 @@ def chooseManagementVersion(c, docs=False):
 
 
 @task
+def clean(c, docs=False):
+    c.run('sudo rm -r build/ dist/ fast_sql_manager.egg-info/')
+
+
+@task
 def deploy(c, docs=False):
     c.run('inv chooseManagementVersion')
     c.run('inv build')
     c.run('inv push')
     c.run('inv uploadPypi')
+    c.run('inv clean')
