@@ -9,7 +9,7 @@ Após fazer a instalação com o pip install fast_orm
 é necessário que você importe a classe Repository.
 
 ```python
-from fast_orm.repository import Repository
+from fast_sql_manager.repository import Repository
 ```
 
 Ao importar a classe você pode instância-la ou
