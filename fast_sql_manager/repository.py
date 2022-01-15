@@ -112,15 +112,18 @@ class Repository(object):
 
         if isinstance(table_name, str):
             try:
-                cursor.execute('SELECT * FROM `%s`' % (table_name))
+                cursor.execute('SELECT * FROM %s.%s' % (self._db_name, table_name))
             except Exception as e:
                 raise e
 
-            re = []
+            response = []
             for data in cursor.fetchall():
-                re.append(data)
+                row = []
+                for index, column_name in enumerate(cursor.column_names):
+                    row.append({column_name: data[index]})
+                response.append(row)
 
-            return re
+            return response
         else:
             raise "Tipo da variável table_name dever ser String"
 
