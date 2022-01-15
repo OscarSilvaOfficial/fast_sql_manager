@@ -1,4 +1,4 @@
-from fast_sql_manager.repository import Repository
+from repository import Repository
 
 db = Repository(
   host='localhost',
@@ -25,5 +25,6 @@ def create_tables():
 
 def test_select():
   create_tables()
-  # print(db.select_all('teste'))
+  print(db.select_all('tb_teste'))
   
+test_select()
