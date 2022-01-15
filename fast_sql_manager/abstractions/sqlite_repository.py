@@ -93,7 +93,6 @@ class SQLiteRepository(object):
             sql = "INSERT INTO %s (%s) VALUES (%s)" % (table_name, columns, values)
 
             try:
-                print(sql)
                 cursor.execute(sql)
                 self._conn.commit()
             except Exception as e:
@@ -137,7 +136,7 @@ class SQLiteRepository(object):
 
         for key, data in where.items():
 
-            if 'condicional' in data:
+            if 'condicional' in str(data):
                 if data['condicional'] == 'or' or data['condicional'] == 'OR':
                     re = "{0}='{1}' OR".format(key, data['value'])
                     where_re.append(re)
@@ -145,7 +144,7 @@ class SQLiteRepository(object):
                     re = "{0}='{1}' AND".format(key, data['value'])
                     where_re.append(re)
             else:
-                if 'value' in data:
+                if 'value' in str(data):
                     re = "{0}='{1}'".format(key, data['value'])
                 else:
                     re = "{0}='{1}'".format(key, data)
@@ -186,7 +185,7 @@ class SQLiteRepository(object):
         where_re = []
         for key, data in where.items():
 
-            if 'condicional' in data:
+            if 'condicional' in str(data):
                 if data['condicional'] == 'or' or data['condicional'] == 'OR':
                     re = "{0}='{1}' OR".format(key, data['value'])
                     where_re.append(re)

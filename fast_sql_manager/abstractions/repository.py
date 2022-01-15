@@ -118,7 +118,6 @@ class Repository(object):
             sql = "INSERT INTO %s.%s (%s) VALUES (%s)" % (self._db_name, table_name, columns, values)
 
             try:
-                print(sql)
                 cursor.execute(sql)
                 self._conn.commit()
             except Exception as e:
@@ -162,7 +161,7 @@ class Repository(object):
 
         for key, data in where.items():
 
-            if 'condicional' in data:
+            if 'condicional' in str(data):
                 if data['condicional'] == 'or' or data['condicional'] == 'OR':
                     re = "{0}='{1}' OR".format(key, data['value'])
                     where_re.append(re)
@@ -170,14 +169,15 @@ class Repository(object):
                     re = "{0}='{1}' AND".format(key, data['value'])
                     where_re.append(re)
             else:
-                if 'value' in data:
+                if 'value' in str(data):
                     re = "{0}='{1}'".format(key, data['value'])
                 else:
                     re = "{0}='{1}'".format(key, data)
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "UPDATE %s SET %s WHERE (%s)" % (table_name, set, where_re)
+        sql = "UPDATE %s.%s SET %s WHERE %s" % (self._db_name, table_name, set, where_re)
+        print(sql)
 
         try:
             cursor.execute(sql)
@@ -211,7 +211,7 @@ class Repository(object):
         where_re = []
         for key, data in where.items():
 
-            if 'condicional' in data:
+            if 'condicional' in str(data):
                 if data['condicional'] == 'or' or data['condicional'] == 'OR':
                     re = "{0}='{1}' OR".format(key, data['value'])
                     where_re.append(re)
@@ -223,7 +223,7 @@ class Repository(object):
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "DELETE FROM %s WHERE (%s)" % (table_name, where_re)
+        sql = "DELETE FROM %s.%s WHERE (%s)" % (self._db_name, table_name, where_re)
 
         try:
             cursor.execute(sql)
