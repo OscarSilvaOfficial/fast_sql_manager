@@ -5,11 +5,16 @@ de um banco de dados MySQL.
 
 # Início
 
-Após fazer a instalação com o pip install fast_orm
-é necessário que você importe a classe Repository.
+Após fazer a instalação com o pip install fast_sql_manager
+é necessário que você importe a classe correspondente ao banco
+que deseja manipular.
 
 ```python
-from fast_sql_manager.repository import Repository
+from fast_sql_manager.implementations.mysql import MySQLRepository
+```
+ou
+```python
+from fast_sql_manager.implementations.sqlite import SQLiteRepository
 ```
 
 Ao importar a classe você pode instância-la ou
