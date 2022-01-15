@@ -1,5 +1,5 @@
 import mysql.connector
-
+from mysql.connector.errors import DatabaseError, ProgrammingError
 
 class DataBase(object):
     """ 
@@ -7,11 +7,11 @@ class DataBase(object):
       ao banco
     """
 
-    def __init__(self, db_host, port, user, passwd, db_name):
-        self._host = db_host
+    def __init__(self, host, port, user, password, db_name):
+        self._host = host
         self._port = port
         self._user = user
-        self._pass = passwd
+        self._pass = password
         self._db = db_name
 
     def getConnection(self):
@@ -33,70 +33,86 @@ class Repository(object):
     """
 
     def __init__(self, host: str, port, user: str, passwd: str, db_name: str = 'mysql'):
+        self._db_name = db_name
         self._db = DataBase(host, port, user, passwd, db_name)
         self._conn = self._db.getConnection()
 
-    def createDataBase(self, db_name: str):
+    def create_database(self, db_name: str):
         """ 
           Para criar um Banco de Dados basta inserir o primeiro
           parâmetro `db_name` com o nome do Banco que deseja Criar
 
-          EX: createDataBase('nome_do_banco')
+          EX: create_database('nome_do_banco')
         """
 
         if isinstance(db_name, str):
             cursor = self._conn.cursor()
+            self._db_name = db_name
             try:
-                cursor.execute('CREATE DATABASE %s' % (db_name))
+                cursor.execute(f'CREATE DATABASE {db_name}')
+            except DatabaseError as e:
+                if e.errno == 1007:
+                    return 'Banco de dados já existe'
             except Exception as e:
                 raise e
             return "Banco criado"
         else:
             raise 'db_name deve ser String'
 
-    def createTable(self, tb_name: str, tb_columns: dict):
+    def create_table(self, name: str, columns: dict):
         """ 
           Para criar um tabela é necessário informar apenas o nome
-          no parâmetro `tb_name` através  de uma String.
+          no parâmetro `table_name` através  de uma String.
 
           Para informa como devem ser as colunas o parâmetro
-          tb_coluns deve ser um dicionário, onde a chave seria o nome 
+          table_coluns deve ser um dicionário, onde a chave seria o nome 
           da coluna e o valor os atributos da coluna
 
-          EX: createTable('minha_tabela', {'id': 'int not null primary key auto_increment'})
+          EX: create_table('minha_tabela', {'id': 'int not null primary key auto_increment'})
         """
 
-        if isinstance(tb_name, str) and isinstance(tb_columns, dict) == True:
+        if isinstance(name, str) and isinstance(columns, dict) == True:
             cursor = self._conn.cursor()
 
             re = []
-            for col in zip(tb_columns.keys(), tb_columns.values()):
-                re.append(' '.join(col))
+            
+            for col in zip(columns.keys(), columns.values()):
+                column_name = "`%s`" % col[0] 
+                column_type = col[1]
+                field = (column_name, column_type)
+                re.append(' '.join(field))
+                
             columns = ', '.join(re)
 
-            sql = "CREATE TABLE `%s` (%s) " % (tb_name, columns)
+            sql = "CREATE TABLE %s.%s (%s)" % (self._db_name, name, columns) 
+            
             try:
                 cursor.execute(sql)
+            except ProgrammingError as e:
+                if e.errno == 1050:
+                    return f'Erro na query: {sql}'
+                if e.errno == 1050:
+                    return 'Tabela já existe'
             except Exception as e:
                 raise e
             return 'Tabela criada'
         else:
             raise 'Tipos dos atributos não foram respeitados'
 
-    def selectAll(self, tb_name: str):
+    def select_all(self, table_name: str):
         """ 
           Para selecionar todos os dados de uma tabela 
           é necessário apenas preencher através de uma
-          string o parâmetro `tb_name` para informar 
+          string o parâmetro `table_name` para informar 
           qual tabela você deseja puxar o dados
 
-          EX: selectAll('nome_da_tabela') 
+          EX: select_all('nome_da_tabela') 
         """
         cursor = self._conn.cursor()
 
-        if isinstance(tb_name, str):
+        if isinstance(table_name, str):
             try:
-                cursor.execute('SELECT * FROM `%s`' % (tb_name))
+                cursor.execute('SELECT * FROM `%s`' % (table_name))
             except Exception as e:
                 raise e
 
@@ -106,36 +122,37 @@ class Repository(object):
 
             return re
         else:
-            raise "Tipo da variável tb_name dever ser String"
+            raise "Tipo da variável table_name dever ser String"
 
-    def insert(self, tb_name: str, tb_columns: list, insert_values: tuple):
+    def insert(self, table_name: str, table_columns: list, insert_values: tuple):
         """ 
         Para inserir os dados em uma tabela é necessário informar o nome da tabela
-        no `tb_name` como String, as colunas de deseja inserir no `tb_columns`
+        no `table_name` como String, as colunas de deseja inserir no `table_columns`
         como um Lista e os valores que deseja inserir `insert_values` como uma tupla
 
-        EX: inser(table_name='pessoas', tb_columns=['cpf', 'nome', 'idade'], insert_values=('000000000', 'João', 19))
+        EX: inser(table_name='pessoas', table_columns=['cpf', 'nome', 'idade'], insert_values=('000000000', 'João', 19))
         """
         cursor = self._conn.cursor()
 
-        if isinstance(tb_name, str) and isinstance(tb_columns, list) and isinstance(insert_values, tuple):
-            columns = ', '.join(tb_columns)
-            values = str(insert_values).replace('(', '').replace(')', '')
-            sql = "INSERT INTO %s (%s) VALUES (%s)" % (
-                tb_name, columns, values)
+        if isinstance(table_name, str) and isinstance(table_columns, list) and isinstance(insert_values, tuple):
+            columns = ', '.join(table_columns)
+            values = str(insert_values).replace('(', '').replace(')', '') if len(insert_values) > 1 else f"'{insert_values[0]}'"
+            sql = "INSERT INTO %s.%s (%s) VALUES (%s)" % (self._db_name, table_name, columns, values)
 
             try:
+                print(sql)
                 cursor.execute(sql)
                 self._conn.commit()
             except Exception as e:
                 raise e
+            
             return '{0} linha(s) afetadas'.format(cursor.rowcount)
         else:
             raise 'Tipos dos atributos não foram respeitados'
 
-    def update(self, tb_name: str, set: dict, where: dict):
+    def update(self, table_name: str, set: dict, where: dict):
         """ 
-          Para realizar o update informe o parâmetro tb_name como String.
+          Para realizar o update informe o parâmetro table_name como String.
           O parâmetro `set` deve ser um Dicionário, sendo a chave a coluna que deseja alterar,
           e o valor sendo o novo valor dessa coluna.
           O parâmetro where também é um Dicionário contendo seu primeiro par de chave e valor com a coluna que deseja
@@ -147,7 +164,7 @@ class Repository(object):
           pois é necessário dentro do dicionário informar qual a condicional que deseja usar
 
           EX: update(
-            tb_name='tab_pessoa',
+            table_name='tab_pessoa',
             set={'nome': 'Joãozinho', 'idade': 17},
             where={
               'cpf': {'value':'123456789', 'condicional': 'and'}, 
@@ -182,7 +199,7 @@ class Repository(object):
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "UPDATE %s SET %s WHERE (%s)" % (tb_name, set, where_re)
+        sql = "UPDATE %s SET %s WHERE (%s)" % (table_name, set, where_re)
 
         try:
             cursor.execute(sql)
@@ -191,9 +208,9 @@ class Repository(object):
             raise e
         return '{0} linha(s) afetadas'.format(cursor.rowcount)
 
-    def delete(self, tb_name: str, where: dict):
+    def delete(self, table_name: str, where: dict):
         """ 
-          Para realizar o update informe o parâmetro `tb_name` como String.
+          Para realizar o update informe o parâmetro `table_name` como String.
 
           O parâmetro where também é um Dicionário contendo seu primeiro par de chave e valor com a coluna que deseja
           realizar o filtro where e o valor que a coluna deve conter
@@ -204,7 +221,7 @@ class Repository(object):
           pois é necessário dentro do dicionário informar qual a condicional que deseja usar
 
           EX: delete(
-            tb_name='tab_pessoa',
+            table_name='tab_pessoa',
             where={
               'cpf': {'value':'123456789', 'condicional': 'and'}, 
               'name': 'João',
@@ -228,7 +245,7 @@ class Repository(object):
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "DELETE FROM %s WHERE (%s)" % (tb_name, where_re)
+        sql = "DELETE FROM %s WHERE (%s)" % (table_name, where_re)
 
         try:
             cursor.execute(sql)
