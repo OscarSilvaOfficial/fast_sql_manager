@@ -27,3 +27,8 @@ def test_select():
   create_tables()
   print("Regístros adicionados: ", len(db.select_all('tb_teste')))
   
+def test_delete():
+  print(db.delete('tb_teste', {'id': 2}))
+
+def test_update():
+  print(db.update(table_name='tb_teste', set={'name': 'Dinorá'}, where={'id': 15}))
