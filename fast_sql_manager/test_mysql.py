@@ -1,6 +1,6 @@
-from repository import Repository
+from fast_sql_manager.implementations.mysql import MySQLRepository
 
-db = Repository(
+db = MySQLRepository(
   host='localhost',
   port=3306, 
   user='root', 
@@ -25,6 +25,5 @@ def create_tables():
 
 def test_select():
   create_tables()
-  print(db.select_all('tb_teste'))
+  print("Regístros adicionados: ", len(db.select_all('tb_teste')))
   
-test_select()
