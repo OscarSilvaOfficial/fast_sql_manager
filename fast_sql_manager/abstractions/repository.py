@@ -122,7 +122,7 @@ class Repository(object):
                     row[column_name] = data[index]
                 response.append(row)
 
-            return response
+            return response if len(response) > 1 else response[0]
         else:
             raise "Tipo da variável table_name dever ser String"
 
