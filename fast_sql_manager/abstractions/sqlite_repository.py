@@ -92,9 +92,9 @@ class SQLiteRepository(object):
 
             response = []
             for data in cursor.fetchall():
-                row = []
+                row = {}
                 for index, column_name in enumerate(list(map(lambda x: x[0], cursor.description))):
-                    row.append({column_name: data[index]})
+                    row[column_name] = data[index]
                 response.append(row)
 
             return response
