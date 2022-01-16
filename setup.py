@@ -5,13 +5,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="fast_sql_manager",
-    version="1.1.0",
+    version="1.2.0",
     author="Oscar da Silva",
     author_email="oscarkaka222@gmail.com",
     description="Um pacote simples para realizar operações no banco",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/OscarSilvaOfficial/easy_sql",
+    url="https://github.com/OscarSilvaOfficial/fast_sql_manager",
     packages=setuptools.find_packages(),
     install_requires=[
         'mysql-connector-python>=8.0.27',
