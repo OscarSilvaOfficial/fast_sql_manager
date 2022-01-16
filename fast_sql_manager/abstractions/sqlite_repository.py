@@ -49,7 +49,7 @@ class SQLiteRepository(object):
         else:
             raise 'Tipos dos atributos não foram respeitados'
 
-    def select_all(self, table_name: str):
+    def select_all(self, table_name: str, where: dict = {}):
         """ 
           Para selecionar todos os dados de uma tabela 
           é necessário apenas preencher através de uma
@@ -61,10 +61,34 @@ class SQLiteRepository(object):
         cursor = self._conn.cursor()
 
         if isinstance(table_name, str):
-            try:
-                cursor.execute('SELECT * FROM %s' % (table_name))
-            except Exception as e:
-                raise e
+            if where == {}:
+                try:
+                    cursor.execute('SELECT * FROM %s' % (table_name))
+                except Exception as e:
+                    raise e
+            else:
+                try:
+                    where_re = []
+                    for key, data in where.items():
+
+                        if 'condicional' in str(data):
+                            if data['condicional'] == 'or' or data['condicional'] == 'OR':
+                                re = "{0}='{1}' OR".format(key, data['value'])
+                                where_re.append(re)
+                            if data['condicional'] == 'and' or data['condicional'] == 'AND':
+                                re = "{0}='{1}' AND".format(key, data['value'])
+                                where_re.append(re)
+                        else:
+                            if 'value' in str(data):
+                                re = "{0}='{1}'".format(key, data['value'])
+                            else:
+                                re = "{0}='{1}'".format(key, data)
+                            where_re.append(re)
+
+                    where_re = ' '.join(where_re)
+                    cursor.execute('SELECT * FROM %s WHERE (%s)' % (table_name, where_re))
+                except Exception as e:
+                    raise e
 
             response = []
             for data in cursor.fetchall():
