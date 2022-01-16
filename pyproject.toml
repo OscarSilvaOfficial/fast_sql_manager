@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fast_sql_manager"
-version = "1.0.0"
+version = "1.2.1"
 description = "Um pacote simples para realizar operações no banco"
 authors = ["OscarSilvaOfficial <oscarkaka222@gmail.com>"]
 license = "MIT"
