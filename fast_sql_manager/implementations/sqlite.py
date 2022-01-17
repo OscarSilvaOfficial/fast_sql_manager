@@ -15,7 +15,7 @@ class DataBaseConfig(DBConfigInterface):
 
 
   def get_connection(self):
-    mydb = sqlite3.connect(database=self._db_path)
+    mydb = sqlite3.connect(database=self._db_path, check_same_thread=False)
     return mydb
 
 
