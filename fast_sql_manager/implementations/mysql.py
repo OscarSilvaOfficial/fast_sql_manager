@@ -1,4 +1,4 @@
-from fast_sql_manager.abstractions.repository import Repository
+from fast_sql_manager.abstractions.mysql import MySQL
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 import mysql.connector
 
@@ -28,6 +28,6 @@ class DataBaseConfig(DBConfigInterface):
     return mydb
 
 
-class MySQLRepository(Repository):
+class MySQLRepository(MySQL):
   def __init__(self, host: str, port, user: str, passwd: str, db_name: str = 'mysql'):
     super().__init__(db_config=DataBaseConfig(host, port, user, passwd, db_name))

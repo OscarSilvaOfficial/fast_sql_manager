@@ -1,7 +1,7 @@
 from mysql.connector.errors import DatabaseError, ProgrammingError
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 
-class Repository(object):
+class MySQL(object):
     """ 
       Os IFs iniciáis são checagens de tipo
       para que não seja possível a quebra das

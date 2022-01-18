@@ -1,8 +1,7 @@
-from http.client import ImproperConnectionState
 from sqlite3 import OperationalError
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 
-class SQLiteRepository(object):
+class SQLite(object):
     """ 
       Os IFs iniciáis são checagens de tipo
       para que não seja possível a quebra das

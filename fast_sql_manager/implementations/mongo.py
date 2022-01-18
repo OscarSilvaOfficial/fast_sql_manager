@@ -1,6 +1,6 @@
-from fast_sql_manager.abstractions.sqlite import SQLite
+from fast_sql_manager.abstractions.mongo import Mongo
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
-import sqlite3
+import pymongo
 
 
 class DataBaseConfig(DBConfigInterface):
@@ -9,16 +9,16 @@ class DataBaseConfig(DBConfigInterface):
   ao banco
   """
 
-  def __init__(self, db_path: str, db_name: str = 'sqlite'):
-    self._db_path = db_path
+  def __init__(self, db_str_connection: str, db_name: str = 'mongo'):
+    self._db_connection = db_str_connection
     self.name = db_name
 
 
   def get_connection(self):
-    mydb = sqlite3.connect(database=self._db_path, check_same_thread=False)
+    mydb = pymongo.MongoClient(self._db_connection, serverSelectionTimeoutMS=5000)
     return mydb
 
 
-class SQLiteRepository(SQLite):
+class MongoRepository(Mongo):
   def __init__(self, db_path: str):
     super().__init__(db_config=DataBaseConfig(db_path))
