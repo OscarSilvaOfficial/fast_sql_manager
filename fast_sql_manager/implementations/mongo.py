@@ -20,5 +20,5 @@ class DataBaseConfig(DBConfigInterface):
 
 
 class MongoRepository(Mongo):
-  def __init__(self, db_path: str):
-    super().__init__(db_config=DataBaseConfig(db_path))
+  def __init__(self, db_str_connection: str, db_name: str):
+    super().__init__(db_config=DataBaseConfig(db_str_connection), db_name=db_name)
