@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'mysql-connector-python>=8.0.27',
+        'pymongo>=4.0.1',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
