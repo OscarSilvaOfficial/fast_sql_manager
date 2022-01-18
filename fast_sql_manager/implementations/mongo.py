@@ -1,4 +1,4 @@
-from fast_sql_manager.abstractions.mongo import Mongo
+from fast_sql_manager.abstractions._mongo import Mongo
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 import pymongo
 

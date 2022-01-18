@@ -1,4 +1,4 @@
-from fast_sql_manager.abstractions.mysql import MySQL
+from fast_sql_manager.abstractions._mysql import MySQL
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 import mysql.connector
 

@@ -1,4 +1,4 @@
-from fast_sql_manager.abstractions.sqlite import SQLite
+from fast_sql_manager.abstractions._sqlite import SQLite
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 import sqlite3
 
