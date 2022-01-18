@@ -1,5 +1,6 @@
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
 from pymongo import MongoClient
+from pymongo import errors
 
 class Mongo(object):
   """ 
@@ -11,6 +12,21 @@ class Mongo(object):
   def __init__(self, db_config: DBConfigInterface, db_name: str = 'mongo'):
     self._conn: MongoClient = db_config.get_connection()
     self._db_name = db_name
+    
+  def create_document(self, collection_name, document):
+    self._conn[self._db_name][collection_name].insert_one(document)
+    
+  def delete_collection(self, collection_name):
+    try:
+      return self._conn[self._db_name].drop_collection(collection_name)
+    except errors.CollectionInvalid as e:
+      return
+    
+  def create_collection(self, collection_name: str):
+    try:
+      self._conn[self._db_name].create_collection(collection_name)
+    except errors.CollectionInvalid as e:
+      return
       
   def select_all(self, collection_name, where={}):
     return_data=[]

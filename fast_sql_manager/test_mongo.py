@@ -6,4 +6,9 @@ mongo = MongoRepository(
 ) 
 
 def test_mongo():
-  assert type(mongo.select_all(collection_name='startup_log')) == list
+  mongo.create_collection('teste')
+  mongo.create_document('teste', {'name': 'Oscar'})
+  response = mongo.select_all(collection_name='teste')
+  mongo.delete_collection('teste')
+  print(response)
+  assert type(response) == list
