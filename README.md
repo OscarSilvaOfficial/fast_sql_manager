@@ -10,11 +10,11 @@ Após fazer a instalação com o pip install fast_sql_manager
 que deseja manipular.
 
 ```python
-from fast_sql_manager.implementations.mysql import MySQLRepository
+from fast_sql_manager.implementations.mysql import MySQLRepository as Repository
 ```
 ou
 ```python
-from fast_sql_manager.implementations.sqlite import SQLiteRepository
+from fast_sql_manager.implementations.sqlite import SQLiteRepository as Repository
 ```
 
 Ao importar a classe você pode instância-la ou
