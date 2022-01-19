@@ -5,10 +5,15 @@ mongo = MongoRepository(
   db_name='local'
 ) 
 
-def test_mongo():
+def test_create_collection():
   mongo.create_collection('teste')
-  mongo.create_document('teste', {'name': 'Oscar'})
+  
+def test_create_document():
+  mongo.create_document('teste', [{'name': 'Oscar'}, {'name': 'Oscar'}])
+  
+def test_select_all():
   response = mongo.select_all(collection_name='teste')
-  mongo.delete_collection('teste')
-  print(response)
   assert type(response) == list
+
+def test_delete_collection():
+  mongo.delete_collection('teste')
