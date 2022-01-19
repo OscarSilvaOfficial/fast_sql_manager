@@ -13,19 +13,24 @@ class Mongo(object):
     self._conn: MongoClient = db_config.get_connection()
     self._db_name = db_name
     
-  def create_document(self, collection_name, document):
-    self._conn[self._db_name][collection_name].insert_one(document)
+  def create_document(self, collection_name, documents):
+    collection = self._conn[self._db_name][collection_name]
+    
+    if isinstance(documents, list):
+      return collection.insert_many(documents)
+  
+    return collection.insert_one(documents)
     
   def delete_collection(self, collection_name):
     try:
       return self._conn[self._db_name].drop_collection(collection_name)
-    except errors.CollectionInvalid as e:
+    except errors.CollectionInvalid:
       return
     
   def create_collection(self, collection_name: str):
     try:
-      self._conn[self._db_name].create_collection(collection_name)
-    except errors.CollectionInvalid as e:
+      return self._conn[self._db_name].create_collection(collection_name)
+    except errors.CollectionInvalid:
       return
       
   def select_all(self, collection_name, where={}):
