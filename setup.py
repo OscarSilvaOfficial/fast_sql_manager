@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="fast_sql_manager",
-    version="1.2.5",
+    version="1.3.1",
     author="Oscar da Silva",
     author_email="oscarkaka222@gmail.com",
     description="Um pacote simples para realizar operações no banco",
@@ -16,6 +16,7 @@ setuptools.setup(
     install_requires=[
         'mysql-connector-python>=8.0.27',
         'pymongo>=4.0.1',
+        'pgdb>=0.0.11',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
