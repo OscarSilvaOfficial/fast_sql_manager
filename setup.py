@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="fast_sql_manager",
-    version="1.3.3",
+    version="1.3.4",
     author="Oscar da Silva",
     author_email="oscarkaka222@gmail.com",
     description="Um pacote simples para realizar operações no banco",

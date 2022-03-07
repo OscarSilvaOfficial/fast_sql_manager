@@ -122,7 +122,7 @@ class Postgres(object):
                     row[column_name] = data[index]
                 response.append(row)
 
-            return response if len(response) > 1 else response[0]
+            return response if len(response) > 1 else response[0] if len(response) == 1 else []
         else:
             raise "Tipo da variável table_name dever ser String"
 
