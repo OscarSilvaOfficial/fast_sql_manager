@@ -27,6 +27,6 @@ class DataBaseConfig(DBConfigInterface):
     return mydb
 
 
-class MySQLRepository(Postgres):
-  def __init__(self, host: str, port, user: str, passwd: str, db_name: str = 'mysql'):
+class PostgresRepository(Postgres):
+  def __init__(self, host: str, port, user: str, passwd: str, db_name: str = 'postgres'):
     super().__init__(db_config=DataBaseConfig(host, port, user, passwd, db_name))
