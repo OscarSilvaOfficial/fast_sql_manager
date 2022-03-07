@@ -19,7 +19,8 @@ class DataBaseConfig(DBConfigInterface):
 
   def get_connection(self):
     mydb = psycopg2.connect(
-      host=f"{self._host}:{self._port}",
+      host=self._host,
+      port=self._port,
       user=self._user,
       password=self._pass,
       database=self._db
