@@ -16,7 +16,7 @@ setuptools.setup(
     install_requires=[
         'mysql-connector-python>=8.0.27',
         'pymongo>=4.0.1',
-        'pgdb>=0.0.11',
+        'psycopg2-binary>=2.9.3',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

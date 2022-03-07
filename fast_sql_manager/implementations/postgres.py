@@ -1,6 +1,6 @@
 from fast_sql_manager.abstractions.postgres import Postgres 
 from fast_sql_manager.interfaces.db_config_interface import DBConfigInterface
-import pgdb
+import psycopg2
 
 
 class DataBaseConfig(DBConfigInterface):
@@ -18,7 +18,7 @@ class DataBaseConfig(DBConfigInterface):
     self.name = db_name
 
   def get_connection(self):
-    mydb = pgdb.connect(
+    mydb = psycopg2.connect(
       host=f"{self._host}:{self._port}",
       user=self._user,
       password=self._pass,
