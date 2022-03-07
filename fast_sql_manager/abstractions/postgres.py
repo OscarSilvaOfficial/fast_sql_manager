@@ -59,7 +59,7 @@ class Postgres(object):
                 
             columns = ', '.join(re)
 
-            sql = "CREATE TABLE %s.%s (%s)" % (self._db_name, name, columns) 
+            sql = "CREATE TABLE %s (%s)" % (name, columns) 
             
             try:
                 cursor.execute(sql)
@@ -88,7 +88,7 @@ class Postgres(object):
         if isinstance(table_name, str):
             if where == {}:
                 try:
-                    cursor.execute('SELECT * FROM %s.%s' % (self._db_name, table_name))
+                    cursor.execute('SELECT * FROM %s' % (table_name))
                 except Exception as e:
                     raise e
             else:
@@ -111,7 +111,7 @@ class Postgres(object):
                             where_re.append(re)
 
                     where_re = ' '.join(where_re)
-                    cursor.execute('SELECT * FROM %s.%s WHERE (%s)' % (self._db_name, table_name, where_re))
+                    cursor.execute('SELECT * FROM %s WHERE (%s)' % (table_name, where_re))
                 except Exception as e:
                     raise e
 
@@ -139,7 +139,7 @@ class Postgres(object):
         if isinstance(table_name, str) and isinstance(table_columns, list) and isinstance(insert_values, tuple):
             columns = ', '.join(table_columns)
             values = str(insert_values).replace('(', '').replace(')', '') if len(insert_values) > 1 else f"'{insert_values[0]}'"
-            sql = "INSERT INTO %s.%s (%s) VALUES (%s)" % (self._db_name, table_name, columns, values)
+            sql = "INSERT INTO %s (%s) VALUES (%s)" % (table_name, columns, values)
 
             try:
                 cursor.execute(sql)
@@ -200,7 +200,7 @@ class Postgres(object):
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "UPDATE %s.%s SET %s WHERE %s" % (self._db_name, table_name, set, where_re)
+        sql = "UPDATE %s SET %s WHERE %s" % (table_name, set, where_re)
         print(sql)
 
         try:
@@ -247,7 +247,7 @@ class Postgres(object):
                 where_re.append(re)
 
         where_re = ' '.join(where_re)
-        sql = "DELETE FROM %s.%s WHERE (%s)" % (self._db_name, table_name, where_re)
+        sql = "DELETE FROM %s WHERE (%s)" % (table_name, where_re)
 
         try:
             cursor.execute(sql)
